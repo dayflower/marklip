@@ -1,6 +1,6 @@
 # marklip
 
-A lightning-fast macOS clipboard utility for seamless Markdown ⇄ HTML conversion.
+A lightning-fast clipboard utility for seamless Markdown ⇄ HTML conversion.
 
 Copy Markdown, convert to HTML with one command. Copy HTML, convert back to Markdown just as easily. No files, no pipes—just your clipboard.
 
@@ -10,7 +10,7 @@ When you're writing in Markdown but need to paste into rich text editors, email 
 
 - **One command**: `marklip to-html` or `marklip to-md`
 - **Clipboard-native**: No intermediate files or stdin/stdout juggling
-- **Fast**: Built in Rust, optimized for Apple Silicon
+- **Fast**: Built in Rust with native clipboard backends
 - **Scriptable**: Clean exit codes for automation
 
 Perfect for technical writers, developers, and anyone who lives in Markdown but works across multiple platforms.
@@ -48,32 +48,12 @@ marklip to-html
 marklip to-md --notify
 ```
 
-### Keyboard Shortcuts (macOS)
-
-Combine with Automator or Raycast for instant conversion:
-
-```bash
-# Bind to ⌘⇧H for HTML conversion
-marklip to-html --quiet --notify
-```
-
-### Scripting
-
-```bash
-#!/bin/bash
-if marklip to-html --quiet; then
-    echo "Conversion successful"
-else
-    echo "Conversion failed with code $?"
-fi
-```
-
 ## Installation
 
 ### Requirements
 
-- macOS (Apple Silicon or Intel)
 - Rust 1.84+ (for building from source)
+- A supported clipboard and notification backend (`clipboard-rs`, `notify-rust`) on your platform (macOS, Linux, Windows)
 
 ### From Source
 
@@ -140,8 +120,8 @@ A: Check System Settings → Notifications and ensure Terminal (or your shell) h
 
 ## Roadmap
 
-- [ ] Homebrew formula
 - [ ] Pre-built binaries for releases
+- [ ] Homebrew formula
 
 ## License
 

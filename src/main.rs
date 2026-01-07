@@ -1,8 +1,7 @@
 use clap::{Parser, Subcommand};
 use clipboard_rs::{Clipboard, ClipboardContent, ClipboardContext, ContentFormat};
 use markdown::to_html as md_to_html;
-use objc2::rc::Retained;
-use objc2_foundation::{NSString, NSUserNotification, NSUserNotificationCenter};
+use notify_rust::Notification;
 use strip_markdown::strip_markdown;
 use thiserror::Error;
 
@@ -38,6 +37,8 @@ enum AppError {
     ConversionFailed,
     #[error("clipboard operation failed: {0}")]
     Clipboard(String),
+    #[error("notification failed: {0}")]
+    Notification(String),
 }
 
 fn main() {
@@ -48,7 +49,7 @@ fn main() {
         Err(err) => {
             emit_message("Failed to access clipboard context", &cli, true);
             eprintln!("{err}");
-            std::process::exit(99);
+            std::process::exit(255);
         }
     };
 
@@ -115,6 +116,7 @@ fn handle_error(err: AppError, cli: &Cli) -> ! {
         AppError::MissingClipboard => (1, "Required clipboard format is missing."),
         AppError::ConversionFailed => (2, "Conversion failed."),
         AppError::Clipboard(msg) => (255, &**msg),
+        AppError::Notification(msg) => (255, &**msg),
     };
 
     emit_message(message, cli, true);
@@ -135,14 +137,10 @@ fn emit_message(message: &str, cli: &Cli, is_error: bool) {
 }
 
 fn send_notification(title: &str, body: &str) -> Result<(), AppError> {
-    // NSUserNotification is deprecated but sufficient for simple local notifications.
-    let notification: Retained<NSUserNotification> = NSUserNotification::new();
-    let title_ns = NSString::from_str(title);
-    let body_ns = NSString::from_str(body);
-    notification.setTitle(Some(&title_ns));
-    notification.setInformativeText(Some(&body_ns));
-
-    let center = NSUserNotificationCenter::defaultUserNotificationCenter();
-    center.deliverNotification(&notification);
-    Ok(())
+    Notification::new()
+        .summary(title)
+        .body(body)
+        .show()
+        .map(|_| ())
+        .map_err(|e| AppError::Notification(e.to_string()))
 }
