@@ -5,6 +5,7 @@
 - Entry point parses subcommands (`to-html`, `to-md`) and global flags (`--help`, `--version`, `--quiet`, `--notify`).
 - No stdin/stdout I/O; all data flow goes through the system clipboard.
 - Unified error type maps operational failures to exit codes: 1 (missing required clipboard format), 2 (conversion failure), 255 (other errors).
+- `auto` subcommand selects the conversion path at runtime: prefers HTML → Markdown; otherwise uses non-empty plain text → HTML; treats empty text or absent content as missing clipboard data.
 
 ## Clipboard handling
 

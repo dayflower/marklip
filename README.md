@@ -8,7 +8,7 @@ Copy Markdown, convert to HTML with one command. Copy HTML, convert back to Mark
 
 When you're writing in Markdown but need to paste into rich text editors, email clients, or CMSs, you're constantly context-switching. marklip eliminates that friction:
 
-- **One command**: `marklip to-html` or `marklip to-md`
+- **One command**: `marklip auto`, `marklip to-html`, or `marklip to-md`
 - **Clipboard-native**: No intermediate files or stdin/stdout juggling
 - **Fast**: Built in Rust with native clipboard backends
 - **Scriptable**: Clean exit codes for automation
@@ -28,6 +28,9 @@ marklip to-html
 
 # Copy some HTML, then:
 marklip to-md --notify
+
+# Let marklip decide based on clipboard:
+marklip auto
 ```
 
 ## Usage Examples
@@ -73,7 +76,7 @@ Pre-built binaries coming soon!
 
 ## Features
 
-- **Two simple commands**: `to-html` and `to-md`
+- **Three commands**: `auto`, `to-html`, and `to-md`
 - **Clipboard-only workflow**: Reads from clipboard, writes back converted result
 - **Clean output**: Clears clipboard before writing to avoid format mixing
 - **Optional notifications**: Visual feedback via Notification Center
@@ -83,6 +86,16 @@ Pre-built binaries coming soon!
 ## Documentation
 
 ### Commands
+
+#### `marklip auto`
+
+Automatically converts based on clipboard content:
+
+- If HTML is present, converts to Markdown (same behavior as `to-md`).
+- Else if plain text is present and not empty, converts to HTML (same as `to-html`).
+- Otherwise, returns an error.
+
+Uses the same options and exit codes as the explicit commands.
 
 #### `marklip to-html`
 

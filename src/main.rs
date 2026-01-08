@@ -23,10 +23,12 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Command {
-    /// Convert clipboard Markdown text to HTML and write back as HTML only.
+    /// Convert clipboard Markdown text to HTML and write back as HTML and plain text.
     ToHtml,
     /// Convert clipboard HTML to Markdown text and write back as plain text only.
     ToMd,
+    /// Auto-detect clipboard content: HTML → Markdown, non-empty text → HTML, otherwise error.
+    Auto,
 }
 
 #[derive(Error, Debug)]
@@ -56,6 +58,7 @@ fn main() {
     let result = match cli.command {
         Command::ToHtml => convert_to_html(&mut ctx),
         Command::ToMd => convert_to_md(&mut ctx),
+        Command::Auto => convert_auto(&mut ctx),
     };
 
     match result {
@@ -67,6 +70,26 @@ fn main() {
             handle_error(err, &cli);
         }
     }
+}
+
+fn convert_auto(ctx: &mut ClipboardContext) -> Result<String, AppError> {
+    if ctx.has(ContentFormat::Html) {
+        return convert_to_md(ctx);
+    }
+
+    if ctx.has(ContentFormat::Text) {
+        let text = ctx
+            .get_text()
+            .map_err(|e| AppError::Clipboard(e.to_string()))?;
+
+        if text.is_empty() {
+            return Err(AppError::MissingClipboard);
+        }
+
+        return convert_to_html(ctx);
+    }
+
+    Err(AppError::MissingClipboard)
 }
 
 fn convert_to_html(ctx: &mut ClipboardContext) -> Result<String, AppError> {
