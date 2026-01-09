@@ -64,7 +64,8 @@ jobs:
             cargo build --release --target "${{ matrix.target }}"
           fi
 
-      - name: Package artifact
+      - name: Package artifact (other than Windows)
+        if: matrix.os != 'windows-latest'
         shell: bash
         run: |
           binary="target/${{ matrix.target }}/release/marklip${{ matrix.binary_ext }}"
@@ -75,6 +76,15 @@ jobs:
           else
             tar czf "dist/${archive}" -C "target/${{ matrix.target }}/release" "marklip${{ matrix.binary_ext }}"
           fi
+
+      - name: Package artifact (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          $binary = "target/${{ matrix.target }}/release/marklip${{ matrix.binary_ext }}"
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          $archive = "dist/marklip-${{ matrix.target }}.${{ matrix.archive_ext }}"
+          Compress-Archive -Path $binary -DestinationPath $archive -Force
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
