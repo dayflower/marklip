@@ -18,10 +18,15 @@ Perfect for technical writers, developers, and anyone who lives in Markdown but 
 ## Quick Start
 
 ```bash
-# Install (from source for now; Homebrew coming soon)
+# Install via Homebrew (macOS)
+brew install dayflower/tap/marklip
+
+# Or download a release binary (macOS/Linux/Windows)
+# https://github.com/dayflower/marklip/releases/latest
+
+# Or install from source
 git clone https://github.com/dayflower/marklip.git
-cd marklip
-cargo install --path .
+cd marklip && cargo install --path .
 
 # Copy some Markdown, then:
 marklip to-html
@@ -58,6 +63,16 @@ marklip to-md --notify
 - Rust 1.84+ (for building from source)
 - A supported clipboard and notification backend (`clipboard-rs`, `notify-rust`) on your platform (macOS, Linux, Windows)
 
+### Homebrew (macOS)
+
+```bash
+brew install dayflower/tap/marklip
+```
+
+### Download Binaries (GitHub Releases)
+
+Grab the latest tarball/zip for your platform from the [Releases page](https://github.com/dayflower/marklip/releases/latest), extract, and place `marklip` on your `PATH`.
+
 ### From Source
 
 ```bash
@@ -66,13 +81,9 @@ cd marklip
 cargo install --path .
 ```
 
-### Download Binary
-
-Pre-built binaries coming soon!
-
 ### Package Managers
 
-- **Homebrew**: Planned
+- **Homebrew (macOS)**: `brew install dayflower/tap/marklip`
 
 ## Features
 
@@ -133,8 +144,8 @@ A: Check System Settings → Notifications and ensure Terminal (or your shell) h
 
 ## Roadmap
 
-- [ ] Pre-built binaries for releases
-- [ ] Homebrew formula
+- [x] Pre-built binaries for releases
+- [x] Homebrew formula
 
 ## License
 

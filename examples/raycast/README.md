@@ -4,7 +4,7 @@ These scripts let Raycast trigger `marklip` conversions on the clipboard. All us
 
 ## Prerequisites
 
-- Install `marklip` and ensure the binary is on your `PATH`.
+- Install `marklip` and ensure the binary is on your `PATH` (macOS users can run `brew install dayflower/tap/marklip`, or download a binary from GitHub Releases).
 - Copy the scripts into your Raycast Script Commands directory (Raycast > Settings > Extensions > Scripts > `Open Script Folder`) and make them executable: `chmod +x marklip-*.sh`.
 
 ## Available scripts
