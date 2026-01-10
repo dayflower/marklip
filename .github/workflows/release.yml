@@ -17,13 +17,15 @@ jobs:
   build:
     name: Build ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: macos-14
+          - os: macos-15
             target: aarch64-apple-darwin
-            archive_ext: zip
+            archive_ext: tar.gz
             binary_ext: ""
             use_cross: false
           - os: ubuntu-latest
@@ -45,6 +47,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
@@ -90,7 +99,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: marklip-${{ matrix.target }}
-          path: dist/marklip-${{ matrix.target }}.${{ matrix.archive_ext }}
+          path: dist/marklip-${{ steps.version.outputs.version }}-${{ matrix.target }}.${{ matrix.archive_ext }}
           if-no-files-found: error
 
   release:
@@ -109,5 +118,20 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update-homebrew-tap:
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - name: Update Homebrew formula
+        uses: mislav/bump-homebrew-formula-action@v3
+        with:
+          formula-name: dispsel
+          formula-path: Formula/marklip.rb
+          homebrew-tap: dayflower/homebrew-tap
+          download-url: https://github.com/dayflower/marklip/releases/download/${{ github.ref_name }}/marklip-${{ needs.release.outputs.version }}-aarch64-apple-darwin.tar.gz
+        env:
+          COMMITTER_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
