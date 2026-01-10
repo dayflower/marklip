@@ -79,7 +79,7 @@ jobs:
         run: |
           binary="target/${{ matrix.target }}/release/marklip${{ matrix.binary_ext }}"
           mkdir -p dist
-          archive="marklip-${{ matrix.target }}.${{ matrix.archive_ext }}"
+          archive="marklip-${{ steps.version.outputs.version }}-${{ matrix.target }}.${{ matrix.archive_ext }}"
           if [[ "${{ matrix.archive_ext }}" == "zip" ]]; then
             zip -j "dist/${archive}" "${binary}"
           else
@@ -92,13 +92,13 @@ jobs:
         run: |
           $binary = "target/${{ matrix.target }}/release/marklip${{ matrix.binary_ext }}"
           New-Item -ItemType Directory -Force -Path dist | Out-Null
-          $archive = "dist/marklip-${{ matrix.target }}.${{ matrix.archive_ext }}"
+          $archive = "dist/marklip-${{ steps.version.outputs.version }}-${{ matrix.target }}.${{ matrix.archive_ext }}"
           Compress-Archive -Path $binary -DestinationPath $archive -Force
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: marklip-${{ matrix.target }}
+          name: marklip-${{ steps.version.outputs.version }}-${{ matrix.target }}
           path: dist/marklip-${{ steps.version.outputs.version }}-${{ matrix.target }}.${{ matrix.archive_ext }}
           if-no-files-found: error
 
