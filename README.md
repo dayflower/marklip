@@ -22,7 +22,7 @@ Perfect for technical writers, developers, and anyone who lives in Markdown but 
 brew install dayflower/tap/marklip
 
 # Or download a release binary (macOS/Linux/Windows)
-# https://github.com/dayflower/marklip/releases/latest
+# [Releases page](https://github.com/dayflower/marklip/releases/latest)
 
 # Or install from source
 git clone https://github.com/dayflower/marklip.git
@@ -69,6 +69,12 @@ marklip to-md --notify
 brew install dayflower/tap/marklip
 ```
 
+### Launcher (macOS)
+
+If you prefer a status bar launcher, install [marklip-launcher](https://github.com/dayflower/marklip-launcher):
+
+- via Homebrew: `brew install dayflower/tap/marklip-launcher`
+
 ### Download Binaries (GitHub Releases)
 
 Grab the latest tarball/zip for your platform from the [Releases page](https://github.com/dayflower/marklip/releases/latest), extract, and place `marklip` on your `PATH`.
@@ -81,10 +87,6 @@ cd marklip
 cargo install --path .
 ```
 
-### Package Managers
-
-- **Homebrew (macOS)**: `brew install dayflower/tap/marklip`
-
 ## Features
 
 - **Three commands**: `auto`, `to-html`, and `to-md`
@@ -94,7 +96,7 @@ cargo install --path .
 - **Quiet mode**: Perfect for scripting
 - **Reliable exit codes**: Easy integration with shell scripts
 
-## Documentation
+## Usage
 
 ### Commands
 
@@ -134,6 +136,10 @@ Same options and exit codes as `to-html`.
 - `-h, --help`: Show help
 - `-v, --version`: Show version
 
+### Example Integrations
+
+- Raycast extension example: see `examples/raycast/README.md` for setup and usage details.
+
 ## Troubleshooting
 
 **Q: "Required clipboard format missing" error**  
@@ -141,11 +147,6 @@ A: Make sure you've copied the correct format—plain text for `to-html`, HTML f
 
 **Q: Notification doesn't appear**  
 A: Check System Settings → Notifications and ensure Terminal (or your shell) has notification permissions.
-
-## Roadmap
-
-- [x] Pre-built binaries for releases
-- [x] Homebrew formula
 
 ## License
 
@@ -155,6 +156,6 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 Built with:
 
-- [pulldown-cmark](link) for Markdown parsing
-- [html2md](link) for HTML conversion
-- [clipboard-rs](link) for clipboard access
+- [pulldown-cmark](https://crates.io/crates/pulldown-cmark) for Markdown parsing
+- [html2md](https://crates.io/crates/html2md) for HTML conversion
+- [clipboard-rs](https://crates.io/crates/clipboard-rs) for clipboard access
