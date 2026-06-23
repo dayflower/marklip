@@ -1,0 +1,15 @@
+class Marklip < Formula
+  desc "A lightning-fast clipboard utility for seamless Markdown ⇄ HTML conversion."
+  homepage "https://github.com/dayflower/marklip"
+  version "{{version}}"
+  url "{{artifact.url}}"
+  sha256 "{{artifact.sha256}}"
+  license "MIT"
+
+  depends_on arch: :arm64
+  depends_on macos: :sonoma
+
+  def install
+    bin.install "marklip"
+  end
+end
